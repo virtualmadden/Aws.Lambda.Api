@@ -17,10 +17,16 @@ provider:
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
       Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
-
+package:
+  individually: true
+  exclude:
+    - ./**
 functions:
   create:
     handler: cars/create.handler
+    package:
+      include:
+        - cars/create.js
     events:
       - http:
           path: cars
@@ -28,6 +34,9 @@ functions:
           cors: true
   list:
     handler: cars/list.handler
+    package:
+      include:
+        - cars/list.js
     events:
       - http:
           path: cars
@@ -35,6 +44,9 @@ functions:
           cors: true
   get:
     handler: cars/get.handler
+    package:
+      include:
+        - cars/get.js
     events:
       - http:
           path: cars/{id}
@@ -42,6 +54,9 @@ functions:
           cors: true
   update:
     handler: cars/update.handler
+    package:
+      include:
+        - cars/update.js
     events:
       - http:
           path: cars/{id}
@@ -49,6 +64,9 @@ functions:
           cors: true
   delete:
     handler: cars/delete.handler
+    package:
+      include:
+        - cars/delete.js
     events:
       - http:
           path: cars/{id}
