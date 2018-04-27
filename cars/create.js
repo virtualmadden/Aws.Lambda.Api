@@ -10,11 +10,11 @@ const dynamoClient = new aws.DynamoDB.DocumentClient();
 
 const createCar = async (request) => {
     params.Item = {
-            id: uuid.v1(),
-            make: request.make,
-            model: request.model,
-            released: request.released                
-        };
+        id: uuid.v1(),
+        make: request.make,
+        model: request.model,
+        released: request.released
+    };
     
     return new Promise((resolve, reject) => {
         dynamoClient.put(params, (error) => {
@@ -30,6 +30,7 @@ const createCar = async (request) => {
                 };
                 reject(response);
             } else {
+                console.log(params);
                 let response = {
                     statusCode: 201,
                     headers: {
@@ -45,7 +46,7 @@ const createCar = async (request) => {
 
 exports.handler = async (event, context, callback) => {
     try {
-        let request = event.body;
+        let request = JSON.parse(event.body);
         
         let response = await createCar(request);
         
