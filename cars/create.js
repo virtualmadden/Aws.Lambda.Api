@@ -1,22 +1,22 @@
 const aws = require("aws-sdk");
 const uuid = require('uuid');
 
+const params = {
+    TableName: process.env.DYNAMODB_TABLE,
+    Item: null
+};
+
 const dynamoClient = new aws.DynamoDB.DocumentClient();
 
-exports.handler = (event, context, callback) => {
-    try {
-        let request = JSON.parse(event.body);
-    
-        const params = {
-            TableName: process.env.DYNAMODB_TABLE,
-            Item: {
-                id: uuid.v1(),
-                make: request.make,
-                model: request.model,
-                released: request.released                
-            }
+const createCar = async (request) => {
+    params.Item = {
+            id: uuid.v1(),
+            make: request.make,
+            model: request.model,
+            released: request.released                
         };
-
+    
+    return new Promise((resolve, reject) => {
         dynamoClient.put(params, (error) => {
             if (error) {
                 let response = {
@@ -28,8 +28,7 @@ exports.handler = (event, context, callback) => {
                         "error": error.message
                     }
                 };
-                
-                callback(null, response);
+                reject(response);
             } else {
                 let response = {
                     statusCode: 201,
@@ -38,10 +37,19 @@ exports.handler = (event, context, callback) => {
                     },
                     body: JSON.stringify(params.Item)
                 };
-                
-                callback(null, response);
+                resolve(response);
             }
         });
+    });
+};
+
+exports.handler = async (event, context, callback) => {
+    try {
+        let request = event.body;
+        
+        let response = await createCar(request);
+        
+        callback(null, response);
     } catch (error) {
         callback(error);
     }   

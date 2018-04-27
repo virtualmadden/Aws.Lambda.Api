@@ -1,28 +1,30 @@
 const aws = require("aws-sdk");
 
+const params = {
+    TableName: process.env.DYNAMODB_TABLE,
+    Key: null,
+    ExpressionAttributeNames: {
+        "#make": "make",
+    },
+    ExpressionAttributeValues: null,
+    UpdateExpression: "SET #make = :make, model = :model, released = :released",
+    ReturnValues: "ALL_NEW"
+};
+
 const dynamoClient = new aws.DynamoDB.DocumentClient();
 
-exports.handler = (event, context, callback) => {
-    try {
-        let request = JSON.parse(event.body);
-    
-        const params = {
-            TableName: process.env.DYNAMODB_TABLE,
-            Key: {
-                id: event.pathParameters.id,
-              },
-              ExpressionAttributeNames: {
-                "#make": "make",
-              },
-              ExpressionAttributeValues: {
-                ":make": request.make,
-                ":model": request.model,
-                ":released": request.released
-              },
-            UpdateExpression: "SET #make = :make, model = :model, released = :released",
-            ReturnValues: "ALL_NEW"
-        };
+const updateCar = async (id, request) => {
+    params.Key = {
+        id: id,
+    };
+      
+    params.ExpressionAttributeValues = {
+        ":make": request.make,
+        ":model": request.model,
+        ":released": request.released
+    };
 
+    return new Promise((resolve, reject) => {
         dynamoClient.update(params, (error, result) => {
             if (error) {
                 let response = {
@@ -35,7 +37,7 @@ exports.handler = (event, context, callback) => {
                     }
                 };
                 
-                callback(null, response);
+                reject(response);
             } else {
                 let response = {
                     statusCode: 200,
@@ -45,9 +47,20 @@ exports.handler = (event, context, callback) => {
                     body: JSON.stringify(result.Attributes)
                 };
                 
-                callback(null, response);
+                resolve(response);
             }
         });
+    });
+};
+
+exports.handler = async (event, context, callback) => {
+    try {
+        let id = event.pathParameters.id;
+        let request = JSON.parse(event.body);
+    
+        let response = await updateCar(id, request);
+
+        callback(null, response);
     } catch (error) {
         callback(error);
     }   
