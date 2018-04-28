@@ -15,9 +15,7 @@ const listAllCards = async () => {
                     headers: { 
                         "Content-Type": "application/json"
                     },
-                    body: {
-                        "error": error.message
-                    }
+                    body: JSON.stringify({"error": error.message})
                 };
 
               reject(response);
@@ -35,7 +33,7 @@ const listAllCards = async () => {
 
 exports.handler = async (event, context, callback) => {
     try {
-        let response = await listAllCards();
+        let response = await listAllCards().catch((response) => {callback(null, response)});
 
         callback(null, response);
     } catch (error) {

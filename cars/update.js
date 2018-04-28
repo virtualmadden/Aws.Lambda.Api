@@ -2,11 +2,17 @@ const aws = require("aws-sdk");
 
 const params = {
     TableName: process.env.DYNAMODB_TABLE,
-    Key: null,
+    Key: {
+        id: null,
+    },
     ExpressionAttributeNames: {
         "#make": "make",
     },
-    ExpressionAttributeValues: null,
+    ExpressionAttributeValues: {
+        ":make": null,
+        ":model": null,
+        ":released": null
+    },
     UpdateExpression: "SET #make = :make, model = :model, released = :released",
     ReturnValues: "ALL_NEW"
 };
@@ -14,9 +20,7 @@ const params = {
 const dynamoClient = new aws.DynamoDB.DocumentClient();
 
 const updateCar = async (id, request) => {
-    params.Key = {
-        id: id,
-    };
+    params.Key.id = id;
       
     params.ExpressionAttributeValues = {
         ":make": request.make,
@@ -32,9 +36,7 @@ const updateCar = async (id, request) => {
                     headers: { 
                         "Content-Type": "application/json"
                     },
-                    body: {
-                        "error": error.message
-                    }
+                    body: JSON.stringify({"error": error.message})
                 };
                 
                 reject(response);
@@ -58,7 +60,7 @@ exports.handler = async (event, context, callback) => {
         let id = event.pathParameters.id;
         let request = JSON.parse(event.body);
     
-        let response = await updateCar(id, request);
+        let response = await updateCar(id, request).catch((response) => {callback(null, response)});
 
         callback(null, response);
     } catch (error) {

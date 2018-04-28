@@ -20,9 +20,7 @@ const deleteCar = async (request) => {
                     headers: { 
                         "Content-Type": "application/json"
                     },
-                    body: {
-                        "error": error.message
-                    }
+                    body: JSON.stringify({"error": error.message})
                 };
 
               reject(response);
@@ -42,7 +40,7 @@ exports.handler = async (event, context, callback) => {
     try {
         let request = event.pathParameters.id;
 
-        let response = await deleteCar(request);
+        let response = await deleteCar(request).catch((response) => {callback(null, response)});
 
         callback(null, response);
     } catch (error) {
