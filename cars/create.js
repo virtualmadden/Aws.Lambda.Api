@@ -14,12 +14,10 @@ const params = {
 const dynamoClient = new aws.DynamoDB.DocumentClient();
 
 const createCar = async (request) => {
-    params.Item = {
-        id: uuid.v1(),
-        make: request.make,
-        model: request.model,
-        released: request.released
-    };
+    params.Item.id = uuid.v1();
+    params.Item.make = request.make;
+    params.Item.model = request.model;
+    params.Item.released = request.released;
     
     return new Promise((resolve, reject) => {
         if(params.Item.make == null || params.Item.model == null || params.Item.released == null) {
