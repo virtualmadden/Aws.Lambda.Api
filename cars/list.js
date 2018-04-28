@@ -1,13 +1,13 @@
 const aws = require("aws-sdk");
 
+const params = {
+    TableName: process.env.DYNAMODB_TABLE
+};
+
 const dynamoClient = new aws.DynamoDB.DocumentClient();
 
-exports.handler = (event, context, callback) => {
-    try {
-        const params = {
-            TableName: process.env.DYNAMODB_TABLE
-        };
-
+const listAllCards = async () => {
+    return new Promise((resolve, reject) => {
         dynamoClient.scan(params, (error, result) => {
             if (error) {
                 let response = {
@@ -20,16 +20,24 @@ exports.handler = (event, context, callback) => {
                     }
                 };
 
-              callback(null, response);
+              reject(response);
             } else {
                 let response = {
                     statusCode: 200,
                     body: JSON.stringify(result.Items),
                   };
 
-                  callback(null, response);
+                  resolve(response);
             };            
         });
+    });
+};
+
+exports.handler = async (event, context, callback) => {
+    try {
+        let response = await listAllCards();
+
+        callback(null, response);
     } catch (error) {
         callback(error);
     }   

@@ -1,16 +1,18 @@
 const aws = require("aws-sdk");
 
+const params = {
+    TableName: process.env.DYNAMODB_TABLE,
+    Key: null
+};
+
 const dynamoClient = new aws.DynamoDB.DocumentClient();
 
-exports.handler = (event, context, callback) => {
-    try {
-        const params = {
-            TableName: process.env.DYNAMODB_TABLE,
-            Key: {
-                id: event.pathParameters.id
-            }
-        };
+const getCar = async (request) => {
+    params.Key = {
+        id: request
+    };
 
+    return new Promise((resolve, reject) => {
         dynamoClient.get(params, (error, result) => {
             if (error) {
                 let response = {
@@ -23,7 +25,7 @@ exports.handler = (event, context, callback) => {
                     }
                 };
 
-              callback(null, response);
+              reject(response);
             } else {
                 let response = null;
                 
@@ -38,9 +40,19 @@ exports.handler = (event, context, callback) => {
                     };
                 }
 
-                callback(null, response);
+                resolve(response);
             }            
         });
+    });
+};
+
+exports.handler = async (event, context, callback) => {
+    try {
+        let request = event.pathParameters.id;
+
+        let response = await getCar(request);
+
+        callback(null, response);
     } catch (error) {
         callback(error);
     }   
