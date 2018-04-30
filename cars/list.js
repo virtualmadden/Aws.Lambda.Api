@@ -4,7 +4,7 @@ const params = {
     TableName: process.env.DYNAMODB_TABLE
 };
 
-const dynamoClient = new aws.DynamoDB.DocumentClient();
+let dynamoClient = null;
 
 const listAllCards = async () => {
     return new Promise((resolve, reject) => {
@@ -32,6 +32,8 @@ const listAllCards = async () => {
 };
 
 exports.handler = async (event, context, callback) => {
+    dynamoClient = new aws.DynamoDB.DocumentClient();
+
     try {
         let response = await listAllCards().catch((response) => {callback(null, response)});
 

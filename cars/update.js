@@ -17,7 +17,7 @@ const params = {
     ReturnValues: "ALL_NEW"
 };
 
-const dynamoClient = new aws.DynamoDB.DocumentClient();
+let dynamoClient = null;
 
 const updateCar = async (id, request) => {
     params.Key.id = id;
@@ -56,8 +56,11 @@ const updateCar = async (id, request) => {
 };
 
 exports.handler = async (event, context, callback) => {
+    dynamoClient = new aws.DynamoDB.DocumentClient();
+
     try {
         let id = event.pathParameters.id;
+        
         let request = JSON.parse(event.body);
     
         let response = await updateCar(id, request).catch((response) => {callback(null, response)});

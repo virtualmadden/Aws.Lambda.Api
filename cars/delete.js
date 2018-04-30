@@ -5,7 +5,7 @@ const params = {
     Key: null
 };
 
-const dynamoClient = new aws.DynamoDB.DocumentClient();
+let dynamoClient = null;
 
 const deleteCar = async (request) => {
     params.Key = {
@@ -26,7 +26,7 @@ const deleteCar = async (request) => {
               reject(response);
             } else {
                 let response = {
-                    statusCode: 200,
+                    statusCode: 204,
                     body: JSON.stringify({}),
                 };
 
@@ -37,6 +37,8 @@ const deleteCar = async (request) => {
 };
 
 exports.handler = async (event, context, callback) => {
+    dynamoClient = new aws.DynamoDB.DocumentClient();
+    
     try {
         let request = event.pathParameters.id;
 
