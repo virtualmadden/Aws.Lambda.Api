@@ -29,7 +29,7 @@ functions:
         - cars/create.js
     events:
       - http:
-          path: cars
+          path: car
           method: post
           cors: true
   list:
@@ -49,7 +49,7 @@ functions:
         - cars/get.js
     events:
       - http:
-          path: cars/{id}
+          path: car/{id}
           method: get
           cors: true
   update:
@@ -59,7 +59,7 @@ functions:
         - cars/update.js
     events:
       - http:
-          path: cars/{id}
+          path: car/{id}
           method: put
           cors: true
   delete:
@@ -69,7 +69,7 @@ functions:
         - cars/delete.js
     events:
       - http:
-          path: cars/{id}
+          path: car/{id}
           method: delete
           cors: true
 resources:

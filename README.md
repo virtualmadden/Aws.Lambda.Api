@@ -25,9 +25,15 @@ serverless deploy
 ```powershell
 Serverless: Packaging service...
 Serverless: Excluding development dependencies...
+Serverless: Excluding development dependencies...
+Serverless: Excluding development dependencies...
+Serverless: Excluding development dependencies...
+Serverless: Excluding development dependencies...
+Serverless: Creating Stack...
+Serverless: Checking Stack create progress...
+Serverless: Stack create finished...
 Serverless: Uploading CloudFormation file to S3...
 Serverless: Uploading artifacts...
-Serverless: Uploading service .zip file to S3 (3.98 KB)...
 Serverless: Validating template...
 Serverless: Updating Stack...
 Serverless: Checking Stack update progress...
@@ -41,11 +47,11 @@ stack: serverless-cars-api-beta
 api keys:
   None
 endpoints:
-  POST - https://**********.execute-api.us-west-2.amazonaws.com/beta/cars
+  POST - https://**********.execute-api.us-west-2.amazonaws.com/beta/car
   GET - https://**********.execute-api.us-west-2.amazonaws.com/beta/cars
-  GET - https://**********.execute-api.us-west-2.amazonaws.com/beta/cars/{id}
-  PUT - https://**********.execute-api.us-west-2.amazonaws.com/beta/cars/{id}
-  DELETE - https://**********.execute-api.us-west-2.amazonaws.com/beta/cars/{id}
+  GET - https://**********.execute-api.us-west-2.amazonaws.com/beta/car/{id}
+  PUT - https://**********.execute-api.us-west-2.amazonaws.com/beta/car/{id}
+  DELETE - https://**********.execute-api.us-west-2.amazonaws.com/beta/car/{id}
 functions:
   create: serverless-cars-api-beta-create
   list: serverless-cars-api-beta-list
@@ -57,7 +63,7 @@ functions:
 ## Examples
 ### Create
 ```powershell
-Invoke-RestMethod -Method "POST" -Uri "https://**********.execute-api.us-west-2.amazonaws.com/beta/cars" -Body '{"released": 1908, "model": "Model T", "make": "Ford"}'
+Invoke-RestMethod -Method "POST" -Uri "https://**********.execute-api.us-west-2.amazonaws.com/beta/car" -Body '{"released": 1908, "model": "Model T", "make": "Ford"}'
 ```
 
 ```powershell
@@ -79,7 +85,7 @@ Model T da58c6c0-475a-11e8-8bf2-5fdd6618ed83 Ford     1908
 
 ### Get
 ```powershell
-Invoke-RestMethod -Uri "https://**********.execute-api.us-west-2.amazonaws.com/beta/cars/da58c6c0-475a-11e8-8bf2-5fdd6618ed83"
+Invoke-RestMethod -Uri "https://**********.execute-api.us-west-2.amazonaws.com/beta/car/da58c6c0-475a-11e8-8bf2-5fdd6618ed83"
 ```
 
 ```powershell
@@ -90,7 +96,7 @@ Model T da58c6c0-475a-11e8-8bf2-5fdd6618ed83 Ford     1908
 
 ### Update
 ```powershell
-Invoke-RestMethod -Method "PUT" -Uri "https://**********.execute-api.us-west-2.amazonaws.com/beta/cars/da58c6c0-475a-11e8-8bf2-5fdd6618ed83" -Body '{"released": 2018, "model": "Mustang", "make": "Ford"}'
+Invoke-RestMethod -Method "PUT" -Uri "https://**********.execute-api.us-west-2.amazonaws.com/beta/car/da58c6c0-475a-11e8-8bf2-5fdd6618ed83" -Body '{"released": 2018, "model": "Mustang", "make": "Ford"}'
 ```
 
 ```powershell
@@ -101,7 +107,7 @@ Mustang da58c6c0-475a-11e8-8bf2-5fdd6618ed83 Ford     2018
 
 ### Delete
 ```powershell
-Invoke-RestMethod -Method "DELETE" -Uri "https://**********.execute-api.us-west-2.amazonaws.com/beta/cars/da58c6c0-475a-11e8-8bf2-5fdd6618ed83"
+Invoke-RestMethod -Method "DELETE" -Uri "https://**********.execute-api.us-west-2.amazonaws.com/beta/car/da58c6c0-475a-11e8-8bf2-5fdd6618ed83"
 ```
 
 ```powershell
