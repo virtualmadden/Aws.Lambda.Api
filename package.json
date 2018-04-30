@@ -1,6 +1,9 @@
 {
   "dependencies": {
-    "aws-sdk": "^2.227.1",
+    "aws-sdk": "^2.229.1",
+    "aws-sdk-mock": "^2.0.0",
+    "chai": "^4.1.2",
+    "sinon": "^5.0.1",
     "uuid": "^3.2.1"
   }
 }

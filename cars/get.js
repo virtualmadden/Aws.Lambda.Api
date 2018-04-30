@@ -5,7 +5,7 @@ const params = {
     Key: null
 };
 
-const dynamoClient = new aws.DynamoDB.DocumentClient();
+let dynamoClient = null;
 
 const getCar = async (request) => {
     params.Key = {
@@ -45,6 +45,8 @@ const getCar = async (request) => {
 };
 
 exports.handler = async (event, context, callback) => {
+    dynamoClient = new aws.DynamoDB.DocumentClient();
+
     try {
         let request = event.pathParameters.id;
 
