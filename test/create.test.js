@@ -6,20 +6,21 @@ const assert = require("chai").assert;
 
 aws_mock.mock('DynamoDB.DocumentClient', 'put', (params, callback) => {
     callback(null, {Item:{"make": "Ford","model": "Mustang","released": 2000}});
-  });
+});
 
-describe("createLambda", function() {
+describe("createLambda", () => {
     [
         "{\"make\": \"Ford\",\"model\": \"Mustang\",\"released\": 2000}"
-    ].forEach(function(request) {
-        it( `successful invocation: request=${request}`, function(done) {
+    ].forEach((request) => {
+        it(`successful invocation: request=${request}`, (done) => {
             var context = {
-                succeed: function(result) {
+                succeed: (result) => {
                         expect(result.body).to.be.true;
                         done();
                     },
-                fail: function() {
-                        done(new Error("never context.fail"));
+                fail: (result) => {
+                        expect(result.body).to.be.true;
+                        done();
                     }
             }
             createLambda.handler({body: request}, {/* context */}, (error, result) => {

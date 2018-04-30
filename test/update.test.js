@@ -8,17 +8,17 @@ aws_mock.mock('DynamoDB.DocumentClient', 'update', (params, callback) => {
     callback(null, {Attributes:{"id": "f321fffb-bda3-4288-b0f0-7c7eeb1cd4cb", "make": "Ford","model": "Mustang","released": 2000}});
   });
 
-describe("updateLambda", function() {
+describe("updateLambda", () => {
     [
         {"pathParameters":{"id": "f321fffb-bda3-4288-b0f0-7c7eeb1cd4cb"},"body":{"make": "Ford","model": "Mustang","released": 2006}}
-    ].forEach(function(request) {
-        it( `successful invocation: request=${JSON.stringify(request)}`, function(done) {
+    ].forEach((request) => {
+        it( `successful invocation: request=${JSON.stringify(request)}`, (done) => {
             var context = {
-                succeed: function(result) {
+                succeed: (result) => {
                         expect(result.body).to.be.true;
                         done();
                     },
-                fail: function() {
+                fail: () => {
                         done(new Error("never context.fail"));
                     }
             }

@@ -8,17 +8,17 @@ aws_mock.mock('DynamoDB.DocumentClient', 'scan', (params, callback) => {
     callback(null, {Items:[{"id": "f321fffb-bda3-4288-b0f0-7c7eeb1cd4cb", "make": "Ford","model": "Mustang","released": 2000}]});
   });
 
-describe("listLambda", function() {
+describe("listLambda", () => {
     [
-        "{}"
-    ].forEach(function(request) {
-        it( `successful invocation: request=${request}`, function(done) {
+        ""
+    ].forEach((request) => {
+        it( `successful invocation: request=${request}`, (done) => {
             var context = {
-                succeed: function(result) {
+                succeed: (result) => {
                         expect(result.body).to.be.true;
                         done();
                     },
-                fail: function() {
+                fail: () => {
                         done(new Error("never context.fail"));
                     }
             }
