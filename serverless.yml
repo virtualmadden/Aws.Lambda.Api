@@ -23,50 +23,50 @@ package:
     - ./**
 functions:
   create:
-    handler: cars/create.handler
+    handler: src/cars/create.handler
     package:
       include:
-        - cars/create.js
+        - src/cars/create.js
     events:
       - http:
           path: car
           method: post
           cors: true
   list:
-    handler: cars/list.handler
+    handler: src/cars/list.handler
     package:
       include:
-        - cars/list.js
+        - src/cars/list.js
     events:
       - http:
           path: cars
           method: get
           cors: true
   get:
-    handler: cars/get.handler
+    handler: src/cars/get.handler
     package:
       include:
-        - cars/get.js
+        - src/cars/get.js
     events:
       - http:
           path: car/{id}
           method: get
           cors: true
   update:
-    handler: cars/update.handler
+    handler: src/cars/update.handler
     package:
       include:
-        - cars/update.js
+        - src/cars/update.js
     events:
       - http:
           path: car/{id}
           method: put
           cors: true
   delete:
-    handler: cars/delete.handler
+    handler: src/cars/delete.handler
     package:
       include:
-        - cars/delete.js
+        - src/cars/delete.js
     events:
       - http:
           path: car/{id}
