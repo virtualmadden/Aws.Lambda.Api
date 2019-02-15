@@ -1,4 +1,4 @@
-const listLambda = require("../cars/list");
+const listLambda = require("../src/cars/list");
 const aws_mock = require("aws-sdk-mock");
 
 const expect = require("chai").expect;

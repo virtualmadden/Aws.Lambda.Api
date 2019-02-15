@@ -1,4 +1,4 @@
-const deleteLambda = require("../cars/delete");
+const deleteLambda = require("../src/cars/delete");
 const aws_mock = require("aws-sdk-mock");
 
 const expect = require("chai").expect;
